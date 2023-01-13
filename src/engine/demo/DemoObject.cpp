@@ -4,8 +4,6 @@
 #include "DemoObject.h"
 
 DemoObject::~DemoObject() {
-    glDeleteBuffers(1, &m_vbo);
-    glDeleteVertexArrays(1, &m_vao);
 }
 
 std::unique_ptr<DemoObject> DemoObject::createTriangle() {
@@ -50,5 +48,10 @@ void DemoObject::render() {
     glBindVertexArray(m_vao);
     glDrawArrays(GL_TRIANGLES, 0, m_vertices.size());
     glBindVertexArray(0);
+}
+
+void DemoObject::cleanup() {
+    glDeleteBuffers(1, &m_vbo);
+    glDeleteVertexArrays(1, &m_vao);
 }
 

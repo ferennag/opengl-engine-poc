@@ -23,6 +23,8 @@ public:
     void render();
     glm::mat4 getModelMatrix() const;
     glm::mat4 getNormalMatrix() const;
+
+    void cleanup();
 private:
     unsigned int m_vao, m_vbo;
     std::vector<Vertex> m_vertices;

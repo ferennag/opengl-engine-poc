@@ -15,8 +15,8 @@ enum class ProjectionType {
 class GLRenderer {
 public:
     void initialize(const glm::vec2 &viewportSize, const ProjectionType& type);
-    void update(double deltaTime);
-    void render(double deltaTime);
+    void update(float deltaTime);
+    void render(float deltaTime);
     void cleanup();
 
     void setViewportSize(const glm::vec2 &viewportSize);

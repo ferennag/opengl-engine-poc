@@ -19,13 +19,14 @@ void GLRenderer::initialize(const glm::vec2 &viewportSize, const ProjectionType 
     TextureManager::getInstance().loadTexture("wall", "../resources/textures/wall.jpg");
 
     m_objects.push_back(DemoObject::createCube());
-    m_camera.setPosition({ 0, 2, -5 });
+    m_camera.setPosition({ 0, 1, 5 });
 }
 
-void GLRenderer::update(double deltaTime) {
+void GLRenderer::update(float deltaTime) {
+    m_camera.update(deltaTime);
 }
 
-void GLRenderer::render(double deltaTime) {
+void GLRenderer::render(float deltaTime) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     auto &shader = ShaderManager::getInstance().getShaderProgram("simple");
     shader.bind();
@@ -47,6 +48,10 @@ void GLRenderer::render(double deltaTime) {
 void GLRenderer::cleanup() {
     ShaderManager::getInstance().cleanup();
     TextureManager::getInstance().cleanup();
+
+    for (auto &object : m_objects) {
+        object->cleanup();
+    }
 }
 
 void GLRenderer::setViewportSize(const glm::vec2 &viewportSize) {

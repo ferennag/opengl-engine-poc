@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "engine/GLRenderer.h"
 #include "engine/input/MouseInput.h"
+#include "engine/input/KeyboardInput.h"
 
 using namespace std;
 
@@ -12,6 +13,16 @@ void keyboardCallback(GLFWwindow *window, int key, int scancode, int action, int
     if (key == GLFW_KEY_ESCAPE) {
         glfwSetWindowShouldClose(window, true);
     }
+
+    KeyActionType actionType;
+    switch (action) {
+        case GLFW_PRESS: actionType = KeyActionType::PRESS; break;
+        case GLFW_RELEASE: actionType = KeyActionType::RELEASE; break;
+        case GLFW_REPEAT: actionType = KeyActionType::REPEAT; break;
+        default: actionType = KeyActionType::PRESS; break;
+    }
+
+    KeyboardInput::getInstance().processKeyEvent(key, actionType);
 }
 
 void mousePositionCallback(GLFWwindow *window, double xpos, double ypos) {
@@ -40,7 +51,6 @@ int main() {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
-
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGL()) {
@@ -58,6 +68,9 @@ int main() {
     glfwSetWindowSizeCallback(window, windowSizeCallback);
     glfwSetErrorCallback(errorCallback);
 
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    KeyboardInput::getInstance().registerDefaultFPSKeys();
     renderer.initialize({ 1920, 1080 }, ProjectionType::PERSPECTIVE);
 
     double lastFrame = 0;
